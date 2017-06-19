@@ -34,7 +34,7 @@
         <module>zookeeper</module>
         <module>kafka</module>
         <module>schema-registry</module>
-        <module>../container3/mysql</module>
+        <module>mysql</module>
         <module>elastic</module>
         <module>connect</module>
     </modules>

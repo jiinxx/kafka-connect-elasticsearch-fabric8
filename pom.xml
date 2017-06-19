@@ -13,7 +13,6 @@
 
     <modules>
         <module>container</module>
-        <module>container3</module>
     </modules>
 
     <build>

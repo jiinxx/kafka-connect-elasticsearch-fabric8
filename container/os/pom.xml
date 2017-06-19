@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com</groupId>
+        <artifactId>container</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <groupId>com</groupId>
+    <artifactId>os</artifactId>
+    <packaging>pom</packaging>
+    <name>OS</name>
+    <description>OS</description>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <configuration>
+                    <images>
+                        <image>
+                            <name>rta/centos71</name>
+                            <alias>os</alias>
+                            <build>
+                                <from>centos:centos7</from>
+                                <tags>
+                                    <tag>latest</tag>
+                                    <tag>1.0.0</tag>
+                                </tags>
+                                <runCmds>
+                                    <run>yum -y install bridge-utils wget curl unzip openssl</run>
+                                    <run>echo "root:atomic" | chpasswd</run>
+                                </runCmds>
+                            </build>
+                        </image>
+                    </images>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

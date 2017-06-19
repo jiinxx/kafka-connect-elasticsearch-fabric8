@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com</groupId>
+        <artifactId>container</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <groupId>com</groupId>
+    <artifactId>connect</artifactId>
+
+    <properties>
+        <docker.image>rta/connect</docker.image>
+        <docker.project.version>1.0.0</docker.project.version>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <configuration>
+                    <images>
+                        <image>
+                            <name>${connect.image.name}</name>
+                            <alias>${connect.image.name}</alias>
+                            <build>
+                                <tags>
+                                    <tag>latest</tag>
+                                    <tag>${docker.project.version}</tag>
+                                </tags>
+                                <dockerFileDir>.</dockerFileDir>
+                            </build>
+                            <run>
+                                <namingStrategy>alias</namingStrategy>
+                                <hostname>${connect.image.name}</hostname>
+                                <env>
+                                    <SCHEMA_REGISTRY_HOST_NAME>${schema-registry.image.name}</SCHEMA_REGISTRY_HOST_NAME>
+                                    <SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL>${zookeeper.image.name}:${zookeeper.port}
+                                    </SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL>
+                                    <CONNECT_BOOTSTRAP_SERVERS>${kafka.image.name}:${kafka.port}</CONNECT_BOOTSTRAP_SERVERS>
+                                    <CONNECT_REST_ADVERTISED_HOST_NAME>${connect.image.name}</CONNECT_REST_ADVERTISED_HOST_NAME>
+                                    <CONNECT_REST_PORT>${connect.port}</CONNECT_REST_PORT>
+                                    <CONNECT_GROUP_ID>compose-connect-group</CONNECT_GROUP_ID>
+                                    <CONNECT_CONFIG_STORAGE_TOPIC>docker-connect-configs</CONNECT_CONFIG_STORAGE_TOPIC>
+                                    <CONNECT_OFFSET_STORAGE_TOPIC>docker-connect-offsets</CONNECT_OFFSET_STORAGE_TOPIC>
+                                    <CONNECT_STATUS_STORAGE_TOPIC>docker-connect-status</CONNECT_STATUS_STORAGE_TOPIC>
+                                    <CONNECT_KEY_CONVERTER>io.confluent.connect.avro.AvroConverter
+                                    </CONNECT_KEY_CONVERTER>
+                                    <CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL>http://${schema-registry.image.name}:${schema-registry.port}
+                                    </CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL>
+                                    <CONNECT_VALUE_CONVERTER>io.confluent.connect.avro.AvroConverter
+                                    </CONNECT_VALUE_CONVERTER>
+                                    <CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL>http://${schema-registry.image.name}:${schema-registry.port}
+                                    </CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL>
+                                    <CONNECT_INTERNAL_KEY_CONVERTER>org.apache.kafka.connect.json.JsonConverter
+                                    </CONNECT_INTERNAL_KEY_CONVERTER>
+                                    <CONNECT_INTERNAL_VALUE_CONVERTER>org.apache.kafka.connect.json.JsonConverter
+                                    </CONNECT_INTERNAL_VALUE_CONVERTER>
+                                    <CONNECT_ZOOKEEPER_CONNECT>${zookeeper.image.name}:${zookeeper.port}</CONNECT_ZOOKEEPER_CONNECT>
+                                </env>
+                                <links>
+                                    <link>${zookeeper.image.name}</link>
+                                    <link>${kafka.image.name}</link>
+                                    <link>${schema-registry.image.name}</link>
+                                    <link>mmysql</link>
+                                    <link>elasticsearch1</link>
+                                </links>
+                                <ports>
+                                    <port>${connect.port}:${connect.port}</port>
+                                </ports>
+                                <volumes>
+                                    <bind>
+                                        <volume>/home/eurbmod/dev/elastic/streamteam2/file:/tmp/quickstart</volume>
+                                        <volume>/home/eurbmod/dev/elastic/streamteam2/jars:/etc/kafka-connect/jars
+                                        </volume>
+                                    </bind>
+                                </volumes>
+                            </run>
+                        </image>
+                    </images>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    
+</project>

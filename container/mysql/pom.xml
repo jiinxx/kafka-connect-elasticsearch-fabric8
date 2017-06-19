@@ -47,7 +47,7 @@
                                 </ports>
                                 <volumes>
                                     <bind>
-                                        <volume>/home/eurbmod/dev/elastic/streamteam2/file/db.sql:/docker-entrypoint-initdb.d/db.sql</volume>
+                                        <volume>${basedir}/src/main/resources/db.sql:/docker-entrypoint-initdb.d/db.sql</volume>
                                     </bind>
                                 </volumes>
                             </run>

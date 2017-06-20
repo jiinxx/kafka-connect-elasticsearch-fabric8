@@ -22,4 +22,4 @@ COPY include/dub /usr/local/bin/dub
 COPY include/cub /usr/local/bin/cub
 
 # Not sure this is needed
-# COPY include/etc/confluent/docker /etc/confluent/docker
+COPY include/etc/confluent/docker /etc/confluent/docker

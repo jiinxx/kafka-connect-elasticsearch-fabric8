@@ -20,4 +20,6 @@ COPY config/confluent.repo /etc/yum.repos.d/confluent.repo
 
 COPY include/dub /usr/local/bin/dub
 COPY include/cub /usr/local/bin/cub
-COPY include/etc/confluent/docker /etc/confluent/docker
+
+# Not sure this is needed
+# COPY include/etc/confluent/docker /etc/confluent/docker
